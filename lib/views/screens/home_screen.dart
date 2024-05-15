@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../models/models.dart';
-import '../widgets/widgets.dart';
+import '../../models/models.dart';
+import '../../services/auth_services/auth.dart';
+import '../components/components.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<Song> songs = Song.songs;
@@ -198,9 +204,16 @@ class _CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: const Icon(
-        Icons.grid_view_rounded,
+      // leading: const Icon(
+      //   Icons.grid_view_rounded,
+      //   color: Colors.white,
+      // ),
+      leading: IconButton(
+        icon: const Icon(Icons.grid_view_rounded),
         color: Colors.white,
+        onPressed: () {
+          Auth.logout();
+        },
       ),
       actions: [
         Container(

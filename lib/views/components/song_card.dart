@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../models/models.dart';
+import '../../models/models.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({

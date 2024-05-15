@@ -26,7 +26,13 @@ class PlaylistScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text('Playlist'),
+          title: Text(
+            'Playlist',
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -48,7 +54,6 @@ class PlaylistScreen extends StatelessWidget {
 
 class _PlaylistSongs extends StatelessWidget {
   const _PlaylistSongs({
-    super.key,
     required this.playlist,
   });
 
@@ -89,9 +94,7 @@ class _PlaylistSongs extends StatelessWidget {
 }
 
 class _PlayOrShuffleSwitch extends StatefulWidget {
-  const _PlayOrShuffleSwitch({
-    super.key,
-  });
+  const _PlayOrShuffleSwitch();
 
   @override
   State<_PlayOrShuffleSwitch> createState() => _PlayOrShuffleSwitchState();
@@ -185,7 +188,6 @@ class _PlayOrShuffleSwitchState extends State<_PlayOrShuffleSwitch> {
 
 class _PlaylistInformation extends StatelessWidget {
   const _PlaylistInformation({
-    super.key,
     required this.playlist,
   });
 
