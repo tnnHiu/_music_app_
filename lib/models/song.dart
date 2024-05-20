@@ -4,6 +4,9 @@ class Song {
   final String artist;
   final String source;
   final String image;
+  final String genreId;
+  final String artistId;
+  final String description;
 
   Song({
     required this.id,
@@ -11,6 +14,9 @@ class Song {
     required this.artist,
     required this.source,
     required this.image,
+    this.genreId = '',
+    this.artistId = '',
+    this.description = '',
   });
 
   factory Song.fromJson(Map<String, dynamic> map) {
@@ -21,6 +27,18 @@ class Song {
       source: map['source'],
       image: map['image'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'url_thumbnail': image,
+      'url_audio': source,
+      'genreID': genreId,
+      'artistID': artistId,
+      'views': 0,
+    };
   }
 
   @override

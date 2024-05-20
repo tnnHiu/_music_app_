@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:music_app_project/views/screens/auth_screen/signup_screen.dart';
 import 'package:music_app_project/views/screens/screens.dart';
+import 'package:music_app_project/views/screens/upload_song_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
               ),
         ),
       ),
+      // home: const UploadSongScreen(),
       home: const LoginScreen(),
       getPages: [
         GetPage(name: '/home', page: () => const AppMainScreen()),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/playlist', page: () => const PlaylistScreen()),
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/signup', page: () => const SignupScreen()),
+        GetPage(name: '/upload_song', page: () => const UploadSongScreen()),
       ],
     );
   }
