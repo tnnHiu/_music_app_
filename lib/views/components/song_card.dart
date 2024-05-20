@@ -27,9 +27,7 @@ class SongCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 image: DecorationImage(
-                  image: AssetImage(
-                    song.coverUrl,
-                  ),
+                  image: NetworkImage(song.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -53,7 +51,7 @@ class SongCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            song.title,
+                            song.artist,
                             overflow: TextOverflow.ellipsis,
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -62,7 +60,7 @@ class SongCard extends StatelessWidget {
                                     ),
                           ),
                           Text(
-                            song.description,
+                            song.title,
                             overflow: TextOverflow.ellipsis,
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(

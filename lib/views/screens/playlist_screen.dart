@@ -80,7 +80,7 @@ class _PlaylistSongs extends StatelessWidget {
                 ),
           ),
           subtitle: Text(
-            '${playlist.songs[index].description} 02:20',
+            '${playlist.songs[index].title} 02:20',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           trailing: const Icon(

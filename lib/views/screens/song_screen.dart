@@ -14,7 +14,8 @@ class SongScreen extends StatefulWidget {
 }
 
 class _SongScreenState extends State<SongScreen> {
-  Song song = Get.arguments ?? Song.songs;
+  Song song = Get.arguments;
+
   AudioPlayer audioPlayer = AudioPlayer();
 
   @override
@@ -24,7 +25,7 @@ class _SongScreenState extends State<SongScreen> {
       ConcatenatingAudioSource(
         children: [
           AudioSource.uri(
-            Uri.parse('asset:///${song.url}'),
+            Uri.parse(song.source),
           ),
         ],
       ),
@@ -39,15 +40,18 @@ class _SongScreenState extends State<SongScreen> {
 
   Stream<SeekBarData> get _seekBarDataStream =>
       rxdart.Rx.combineLatest2<Duration, Duration?, SeekBarData>(
-          audioPlayer.positionStream, audioPlayer.durationStream, (
-        Duration position,
-        Duration? duration,
-      ) {
-        return SeekBarData(
-          position,
-          duration ?? Duration.zero,
-        );
-      });
+        audioPlayer.positionStream,
+        audioPlayer.durationStream,
+        (
+          Duration position,
+          Duration? duration,
+        ) {
+          return SeekBarData(
+            position,
+            duration ?? Duration.zero,
+          );
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +64,8 @@ class _SongScreenState extends State<SongScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            song.coverUrl,
+          Image.network(
+            song.image,
             fit: BoxFit.cover,
           ),
           const _BackgroundFilter(),
@@ -96,7 +100,7 @@ class _MusicPlayer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            song.title,
+            song.artist,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -104,9 +108,9 @@ class _MusicPlayer extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            song.description,
+            song.title,
             maxLines: 2,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Colors.white,
                 ),
           ),

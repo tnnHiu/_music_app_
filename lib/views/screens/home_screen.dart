@@ -1,8 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_project/view_model/song_view_model.dart';
+import 'package:music_app_project/views/screens/discovery_screen.dart';
+import 'package:music_app_project/views/screens/favourite_screen.dart';
+import 'package:music_app_project/views/screens/user_screen.dart';
 
 import '../../models/models.dart';
 import '../../services/auth_services/auth.dart';
 import '../components/components.dart';
+
+class AppMainScreen extends StatefulWidget {
+  const AppMainScreen({super.key});
+
+  @override
+  State<AppMainScreen> createState() => _AppMainScreenState();
+}
+
+class _AppMainScreenState extends State<AppMainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _tabs = <Widget>[
+    const HomeScreen(),
+    const FavouriteScreen(),
+    const DiscoveryScreen(),
+    const UserScreen(),
+  ];
+
+  void _onItemTaped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const _CustomAppbar(),
+      body: _tabs.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.deepPurple.shade800,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline),
+            label: 'Favourites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.play_circle_outlined),
+            label: 'Play',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people_outline),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTaped,
+      ),
+    );
+  }
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,26 +76,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Song> songs = [];
+  List<PlayList> playlists = PlayList.playlists;
+  late SongViewModel _songViewModel;
+
+  @override
+  void initState() {
+    _songViewModel = SongViewModel();
+    _songViewModel.loadSong();
+    observeData();
+    super.initState();
+  }
+
+  void observeData() {
+    _songViewModel.songStream.stream.listen((songList) {
+      setState(() {
+        songs.addAll(songList);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Song> songs = Song.songs;
-    List<PlayList> playlists = PlayList.playlists;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.deepPurple.shade800.withOpacity(0.8),
-            Colors.deepPurple.shade200.withOpacity(0.8),
+            Colors.deepPurple.shade800,
+            Colors.deepPurple.shade200,
           ],
         ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const _CustomAppbar(),
-        bottomNavigationBar: const _CustomNavBar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -162,52 +241,15 @@ class _DiscoverMusic extends StatelessWidget {
   }
 }
 
-class _CustomNavBar extends StatelessWidget {
-  const _CustomNavBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.deepPurple.shade800,
-      unselectedItemColor: Colors.white,
-      selectedItemColor: Colors.white,
-      showUnselectedLabels: false,
-      showSelectedLabels: false,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_outline),
-          label: 'Favourites',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.play_circle_outlined),
-          label: 'Play',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people_outline),
-          label: 'Profile',
-        ),
-      ],
-    );
-  }
-}
-
 class _CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const _CustomAppbar();
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
+      backgroundColor: Colors.deepPurple.shade800,
       elevation: 0,
-      // leading: const Icon(
-      //   Icons.grid_view_rounded,
-      //   color: Colors.white,
-      // ),
       leading: IconButton(
         icon: const Icon(Icons.grid_view_rounded),
         color: Colors.white,
@@ -223,7 +265,6 @@ class _CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                 'https://static.vecteezy.com/system/resources/thumbnails'
                 '/002/002/403/small/man-with-beard-avatar-character-'
                 'isolated-icon-free-vector.jpg'),
-            // backgroundImage: AssetImage('assets/images/profile.jpg'),
           ),
         ),
       ],

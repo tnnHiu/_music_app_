@@ -12,20 +12,20 @@ class PlayList {
   });
 
   static List<PlayList> playlists = [
-    PlayList(
-      title: 'Rock Ballad',
-      songs: Song.songs,
-      imageUrl: 'assets/images/chillies.jpg',
-    ),
-    PlayList(
-      title: 'Pop',
-      songs: Song.songs,
-      imageUrl: 'assets/images/sontung.jpg',
-    ),
-    PlayList(
-      title: 'Ballad',
-      songs: Song.songs,
-      imageUrl: 'assets/images/trungquan.jpg',
-    ),
+    // PlayList(
+    //   title: 'Rock Ballad',
+    //   songs: Song.songs,
+    //   imageUrl: 'assets/images/chillies.jpg',
+    // ),
+    // PlayList(
+    //   title: 'Pop',
+    //   songs: Song.songs,
+    //   imageUrl: 'assets/images/sontung.jpg',
+    // ),
+    // PlayList(
+    //   title: 'Ballad',
+    //   songs: Song.songs,
+    //   imageUrl: 'assets/images/trungquan.jpg',
+    // ),
   ];
 }
