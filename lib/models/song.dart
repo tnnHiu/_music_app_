@@ -1,5 +1,5 @@
 class Song {
-  final String id;
+  final int id;
   final String title;
   final String artist;
   final String source;
@@ -11,7 +11,7 @@ class Song {
   Song({
     required this.id,
     required this.title,
-    required this.artist,
+    this.artist = '',
     required this.source,
     required this.image,
     this.genreId = '',
@@ -21,11 +21,11 @@ class Song {
 
   factory Song.fromJson(Map<String, dynamic> map) {
     return Song(
-      id: map['id'],
+      id: map['id'] as int,
       title: map['title'],
-      artist: map['artist'],
-      source: map['source'],
-      image: map['image'],
+      // artist: map['artist'],
+      source: map['url_audio'],
+      image: map['url_thumbnail'],
     );
   }
 

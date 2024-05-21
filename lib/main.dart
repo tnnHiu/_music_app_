@@ -7,16 +7,6 @@ import 'package:music_app_project/views/screens/upload_song_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // var artistRepository = ArtistRepositoryImpl();
-  // var artist = await artistRepository.loadArtistRepository();
-  // if (artist != null) {
-  //   for (var a in artist) {
-  //     print(a.id);
-  //   }
-  // }
-  // String? token = await Auth.readCache(key: 'token');
-  // print(token);
-
   runApp(const MyApp());
 }
 
