@@ -1,5 +1,5 @@
 class Artist {
-  final String id;
+  final int id;
   final String name;
 
   Artist({
@@ -9,16 +9,8 @@ class Artist {
 
   factory Artist.fromJson(Map<String, dynamic> map) {
     return Artist(
-      id: map['id'],
+      id: map['id'] as int ,
       name: map['name'],
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Artist && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
 }

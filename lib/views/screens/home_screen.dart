@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:music_app_project/view_model/song_view_model.dart';
 import 'package:music_app_project/views/screens/discovery_screen.dart';
 import 'package:music_app_project/views/screens/favourite_screen.dart';
@@ -260,11 +261,14 @@ class _CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Container(
           margin: const EdgeInsets.only(right: 20),
-          child: const CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://static.vecteezy.com/system/resources/thumbnails'
-                '/002/002/403/small/man-with-beard-avatar-character-'
-                'isolated-icon-free-vector.jpg'),
+          child: InkWell(
+            onTap: () => Get.toNamed('/upload_song'),
+            child: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://static.vecteezy.com/system/resources/thumbnails'
+                  '/002/002/403/small/man-with-beard-avatar-character-'
+                  'isolated-icon-free-vector.jpg'),
+            ),
           ),
         ),
       ],

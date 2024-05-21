@@ -10,6 +10,7 @@ class AppTextField extends StatelessWidget {
     this.controller,
     this.isTypeNumber = false,
     this.validator,
+    this.onSaved,
   });
 
   final String hintText;
@@ -19,6 +20,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool isTypeNumber;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class AppTextField extends StatelessWidget {
               obscureText: obscureText,
               controller: controller,
               validator: validator,
+              onSaved: onSaved,
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
           ),
