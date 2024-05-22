@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,6 +57,7 @@ class AppMainScreen extends StatefulWidget {
 
 class _AppMainScreenState extends State<AppMainScreen> {
   int _selectedIndex = 0;
+  late AudioHandler audioHandler;
 
   final List _tabs = [
     const HomeScreen(),
@@ -68,6 +70,11 @@ class _AppMainScreenState extends State<AppMainScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() async {
+    super.initState();
   }
 
   @override

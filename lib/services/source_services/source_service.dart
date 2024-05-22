@@ -10,12 +10,14 @@ import '../auth_services/auth.dart';
 
 class SourceService {
   Future<List<Song>?> loadSong() async {
-    final url = Uri.parse('${apiUrl}song');
+    // final url = Uri.parse('${apiUrl}song');
+    final url = Uri.parse(apiUrlSong);
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final bodyContent = utf8.decode(response.bodyBytes);
       var songWrapper = jsonDecode(bodyContent) as Map;
-      var songList = songWrapper['listResult'] as List;
+      // var songList = songWrapper['listResult'] as List;
+      var songList = songWrapper['songs'] as List;
       List<Song> songs = songList.map((song) => Song.fromJson(song)).toList();
       return songs;
     } else {
