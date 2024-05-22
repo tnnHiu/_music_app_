@@ -7,7 +7,7 @@ class GenreViewModel {
   StreamController<List<Genre>> genreStream = StreamController();
 
   Future<void> loadGenre() async {
-    final genreRepository = GenreRepositoryImpl();
+    final genreRepository = GenreRepository();
     genreRepository.loadGenreRepository().then(
           (genre) => genreStream.add(genre!),
         );

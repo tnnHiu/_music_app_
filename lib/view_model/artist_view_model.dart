@@ -8,7 +8,7 @@ class ArtistViewModel {
   StreamController<List<Artist>> artistStream = StreamController();
 
   Future<void> loadArtist() async {
-    final artistRepository = ArtistRepositoryImpl();
+    final artistRepository = ArtistRepository();
     artistRepository.loadArtistRepository().then(
           (artist) => artistStream.add(artist!),
         );

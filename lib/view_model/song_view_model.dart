@@ -8,7 +8,7 @@ class SongViewModel {
   StreamController<List<Song>> songStream = StreamController();
 
   Future<void> loadSong() async {
-    final songRepository = SongRepositoryImpl();
+    final songRepository = SongRepository();
     songRepository.loadDataRepository().then(
           (song) => songStream.add(song!),
         );

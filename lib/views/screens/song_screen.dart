@@ -4,7 +4,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_app_project/models/models.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
-import '../components/components.dart';
+import '../components/player_buttons.dart';
+import '../components/seekbar.dart';
 
 class SongScreen extends StatefulWidget {
   const SongScreen({super.key});

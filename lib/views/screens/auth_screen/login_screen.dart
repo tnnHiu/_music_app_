@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app_project/services/auth_services/auth.dart';
-import 'package:music_app_project/views/components/components.dart';
 import 'package:music_app_project/views/screens/auth_screen/signup_screen.dart';
+
+import '../../components/app_alert_dialog.dart';
+import '../../components/app_button.dart';
+import '../../components/app_text_field.dart';
+import '../../components/section_header.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

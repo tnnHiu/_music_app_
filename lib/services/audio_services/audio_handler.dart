@@ -16,9 +16,9 @@ Future<AudioHandler> initAudioService({
   );
 }
 
-class AppAudioHandler extends BaseAudioHandler {
+class AppAudioHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();
-  final _queue = ConcatenatingAudioSource(children: []);
+  final _playlist = ConcatenatingAudioSource(children: []);
 
   AppAudioHandler() {
     _loadEmptyPlaylist();
@@ -36,12 +36,18 @@ class AppAudioHandler extends BaseAudioHandler {
   Future<void> stop() => _player.stop();
 
   @override
+  Future<void> skipToNext() => _player.seekToNext();
+
+  @override
+  Future<void> skipToPrevious() => _player.seekToPrevious();
+
+  @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
     final audioSource = AudioSource.uri(
       Uri.parse(mediaItem.extras!['audioUrl'] as String),
       tag: mediaItem,
     );
-    _queue.add(audioSource);
+    _playlist.add(audioSource);
 
     final newQueue = queue.value..add(mediaItem);
     queue.add(newQueue);
@@ -49,8 +55,8 @@ class AppAudioHandler extends BaseAudioHandler {
 
   @override
   Future<void> removeQueueItemAt(int index) async {
-    if (_queue.length > index) {
-      _queue.removeAt(index);
+    if (_playlist.length > index) {
+      _playlist.removeAt(index);
       final newQueue = queue.value..removeAt(index);
       queue.add(newQueue);
     }
@@ -58,7 +64,7 @@ class AppAudioHandler extends BaseAudioHandler {
 
   Future<void> _loadEmptyPlaylist() async {
     try {
-      await _player.setAudioSource(_queue);
+      await _player.setAudioSource(_playlist);
     } catch (e) {
       print('Error loading empty playlist: $e');
     }
@@ -79,24 +85,29 @@ class AppAudioHandler extends BaseAudioHandler {
 
   PlaybackState _transformEvent(PlaybackEvent event) {
     return PlaybackState(
-      playing: _player.playing,
-      updatePosition: _player.position,
-      bufferedPosition: _player.bufferedPosition,
-      speed: _player.speed,
-      queueIndex: _player.currentIndex,
-      processingState: const {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[_player.processingState]!,
-      controls: [
-        MediaControl.skipToPrevious,
-        if (_player.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.stop,
-        MediaControl.skipToNext,
-      ],
-    );
+        playing: _player.playing,
+        updatePosition: _player.position,
+        bufferedPosition: _player.bufferedPosition,
+        speed: _player.speed,
+        queueIndex: _player.currentIndex,
+        // androidCompactActionIndices: const [0, 1, 3],
+        processingState: const {
+          ProcessingState.idle: AudioProcessingState.idle,
+          ProcessingState.loading: AudioProcessingState.loading,
+          ProcessingState.buffering: AudioProcessingState.buffering,
+          ProcessingState.ready: AudioProcessingState.ready,
+          ProcessingState.completed: AudioProcessingState.completed,
+        }[_player.processingState]!,
+        controls: [
+          MediaControl.skipToPrevious,
+          if (_player.playing) MediaControl.pause else MediaControl.play,
+          MediaControl.stop,
+          MediaControl.skipToNext,
+        ],
+        systemActions: const {
+          MediaAction.seek,
+          MediaAction.seekForward,
+          MediaAction.seekBackward,
+        });
   }
 }

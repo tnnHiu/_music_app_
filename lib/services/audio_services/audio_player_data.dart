@@ -8,7 +8,7 @@ class AudioPlayerData<T> extends Equatable {
   final Duration? currentAudioDuration;
   final Duration? currentAudioPosition;
 
-  AudioPlayerData({
+  const AudioPlayerData({
     this.audio,
     required this.queue,
     required this.playbackState,

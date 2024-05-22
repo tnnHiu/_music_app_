@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app_project/constants/app_constants.dart';
 import 'package:music_app_project/views/screens/auth_screen/login_screen.dart';
-import 'package:music_app_project/views/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../main.dart';
 
 typedef LoginCallback = void Function(bool success, dynamic responseData);
 typedef RegisterCallback = void Function(bool success, dynamic responseData);

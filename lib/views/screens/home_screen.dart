@@ -1,73 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:music_app_project/view_model/song_view_model.dart';
-import 'package:music_app_project/views/screens/discovery_screen.dart';
-import 'package:music_app_project/views/screens/favourite_screen.dart';
-import 'package:music_app_project/views/screens/user_screen.dart';
 
 import '../../models/models.dart';
-import '../../services/auth_services/auth.dart';
-import '../components/components.dart';
-
-class AppMainScreen extends StatefulWidget {
-  const AppMainScreen({super.key});
-
-  @override
-  State<AppMainScreen> createState() => _AppMainScreenState();
-}
-
-class _AppMainScreenState extends State<AppMainScreen> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _tabs = <Widget>[
-    const HomeScreen(),
-    const FavouriteScreen(),
-    const DiscoveryScreen(),
-    const UserScreen(),
-  ];
-
-  void _onItemTaped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const _CustomAppbar(),
-      body: _tabs.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.deepPurple.shade800,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'Favourites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle_outlined),
-            label: 'Play',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTaped,
-      ),
-    );
-  }
-}
+import '../components/playlist_card.dart';
+import '../components/section_header.dart';
+import '../components/song_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -240,42 +177,4 @@ class _DiscoverMusic extends StatelessWidget {
       ),
     );
   }
-}
-
-class _CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const _CustomAppbar();
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      // backgroundColor: Colors.transparent,
-      backgroundColor: Colors.deepPurple.shade800,
-      elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.grid_view_rounded),
-        color: Colors.white,
-        onPressed: () {
-          Auth.logout();
-        },
-      ),
-      actions: [
-        Container(
-          margin: const EdgeInsets.only(right: 20),
-          child: InkWell(
-            onTap: () => Get.toNamed('/upload_song'),
-            child: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://static.vecteezy.com/system/resources/thumbnails'
-                  '/002/002/403/small/man-with-beard-avatar-character-'
-                  'isolated-icon-free-vector.jpg'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(56.0);
 }

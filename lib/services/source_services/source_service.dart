@@ -7,18 +7,8 @@ import 'package:music_app_project/models/genre.dart';
 import '../../models/artist.dart';
 import "../../models/models.dart";
 import '../auth_services/auth.dart';
-// lay du lieu bai hat
 
-abstract interface class SourceService {
-  Future<List<Song>?> loadSong();
-
-  Future<List<Genre>?> loadGenre();
-
-  Future<List<Artist>?> loadArtist();
-}
-
-class SourceServiceImpl implements SourceService {
-  @override
+class SourceService {
   Future<List<Song>?> loadSong() async {
     final url = Uri.parse('${apiUrl}song');
     final response = await http.get(url);
@@ -33,7 +23,6 @@ class SourceServiceImpl implements SourceService {
     }
   }
 
-  @override
   Future<List<Genre>?> loadGenre() async {
     final url = Uri.parse('${apiUrl}genre');
     final response = await http.get(url);
@@ -49,7 +38,6 @@ class SourceServiceImpl implements SourceService {
     }
   }
 
-  @override
   Future<List<Artist>?> loadArtist() async {
     final url = Uri.parse('${apiUrl}artist');
     String? token = await Auth.readCache(key: 'token');
