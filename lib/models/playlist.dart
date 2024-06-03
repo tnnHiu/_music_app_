@@ -1,17 +1,17 @@
 import '../models/models.dart';
 
-class PlayList {
+class Playlist {
   final String title;
   final List<Song> songs;
   final String imageUrl;
 
-  PlayList({
+  Playlist({
     required this.title,
     required this.songs,
     required this.imageUrl,
   });
 
-  static List<PlayList> playlists = [
+  static List<Playlist> playlists = [
     // PlayList(
     //   title: 'Rock Ballad',
     //   songs: Song.songs,

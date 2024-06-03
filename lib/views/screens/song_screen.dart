@@ -1,9 +1,11 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_app_project/models/models.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
+import '../../controllers/audio_player_controller.dart';
 import '../components/player_buttons.dart';
 import '../components/seekbar.dart';
 
@@ -15,43 +17,78 @@ class SongScreen extends StatefulWidget {
 }
 
 class _SongScreenState extends State<SongScreen> {
-  Song song = Get.arguments;
+  int currentSongIndex = Get.find<int>();
+  List<Song> songs = Get.find<List<Song>>();
 
-  AudioPlayer audioPlayer = AudioPlayer();
+  // AudioPlayer audioPlayer = AudioPlayer();
+  late AudioPlayerController audioPlayerController;
+  final _playlist = ConcatenatingAudioSource(children: []);
 
   @override
   void initState() {
     super.initState();
-    audioPlayer.setAudioSource(
-      ConcatenatingAudioSource(
-        children: [
-          AudioSource.uri(
-            Uri.parse(song.source),
+    audioPlayerController = Get.find<AudioPlayerController>();
+    _initializePlayer();
+    // for (Song song in songs) {
+    //   _playlist.add(
+    //     AudioSource.uri(
+    //       Uri.parse(song.source),
+    //       tag: MediaItem(
+    //         id: song.id,
+    //         artist: song.artist,
+    //         title: song.title,
+    //         artUri: Uri.parse(song.image),
+    //       ),
+    //     ),
+    //   );
+    // }
+    //
+    // audioPlayer.setAudioSource(
+    //   _playlist,
+    //   initialIndex: currentSongIndex,
+    //   initialPosition: Duration.zero,
+    // );
+  }
+
+  void _initializePlayer() async {
+    for (Song song in songs) {
+      _playlist.add(
+        AudioSource.uri(
+          Uri.parse(song.source),
+          tag: MediaItem(
+            id: song.id,
+            artist: song.artist,
+            title: song.title,
+            artUri: Uri.parse(song.image),
           ),
-        ],
-      ),
+        ),
+      );
+    }
+
+    await audioPlayerController.audioPlayer.setAudioSource(
+      _playlist,
+      initialIndex: currentSongIndex,
+      initialPosition: Duration.zero,
     );
+
+    audioPlayerController.audioPlayer.play();
   }
 
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   audioPlayer.dispose();
+  //   super.dispose();
+  // }
 
-  Stream<SeekBarData> get _seekBarDataStream =>
-      rxdart.Rx.combineLatest2<Duration, Duration?, SeekBarData>(
-        audioPlayer.positionStream,
-        audioPlayer.durationStream,
-        (
-          Duration position,
-          Duration? duration,
-        ) {
-          return SeekBarData(
-            position,
-            duration ?? Duration.zero,
-          );
-        },
+  Stream<SeekBarData> get _seekBarDataStream => rxdart.Rx.combineLatest3(
+        audioPlayerController.audioPlayer.positionStream,
+        audioPlayerController.audioPlayer.bufferedPositionStream,
+        audioPlayerController.audioPlayer.durationStream,
+        (position, bufferedPosition, duration) => SeekBarData(
+          position,
+          bufferedPosition,
+          duration ?? Duration.zero,
+        ),
       );
 
   @override
@@ -65,15 +102,29 @@ class _SongScreenState extends State<SongScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(
-            song.image,
-            fit: BoxFit.cover,
+          StreamBuilder<SequenceState?>(
+            stream: audioPlayerController.audioPlayer.sequenceStateStream,
+            builder: (context, snapshot) {
+              final state = snapshot.data;
+              if (state?.sequence.isEmpty ?? true) {
+                return const SizedBox();
+              }
+              final metadata = state!.currentSource!.tag as MediaItem;
+              return Image.network(
+                metadata.artUri.toString(),
+                fit: BoxFit.cover,
+              );
+            },
           ),
+          // Image.network(
+          //   song.image,
+          //   fit: BoxFit.cover,
+          // ),
           const _BackgroundFilter(),
           _MusicPlayer(
-            song: song,
+            // song: song,
             seekBarDataStream: _seekBarDataStream,
-            audioPlayer: audioPlayer,
+            audioPlayer: audioPlayerController.audioPlayer,
           ),
         ],
       ),
@@ -83,12 +134,10 @@ class _SongScreenState extends State<SongScreen> {
 
 class _MusicPlayer extends StatelessWidget {
   const _MusicPlayer({
-    required this.song,
     required Stream<SeekBarData> seekBarDataStream,
     required this.audioPlayer,
   }) : _seekBarDataStream = seekBarDataStream;
 
-  final Song song;
   final Stream<SeekBarData> _seekBarDataStream;
   final AudioPlayer audioPlayer;
 
@@ -100,20 +149,34 @@ class _MusicPlayer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            song.artist,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            song.title,
-            maxLines: 2,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Colors.white,
-                ),
+          StreamBuilder<SequenceState?>(
+            stream: audioPlayer.sequenceStateStream,
+            builder: (context, snapshot) {
+              final state = snapshot.data;
+              if (state?.sequence.isEmpty ?? true) {
+                return const SizedBox();
+              }
+              final metadata = state!.currentSource!.tag as MediaItem;
+              return Column(
+                children: [
+                  Text(
+                    metadata.artist!,
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    metadata.title,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 30),
           StreamBuilder<SeekBarData>(
@@ -175,13 +238,15 @@ class _BackgroundFilter extends StatelessWidget {
       blendMode: BlendMode.dstOut,
       child: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
               Colors.deepPurple.shade200,
               Colors.deepPurple.shade800,
-            ])),
+            ],
+          ),
+        ),
       ),
     );
   }

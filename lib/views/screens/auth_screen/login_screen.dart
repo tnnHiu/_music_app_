@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app_project/services/auth_services/auth.dart';
@@ -136,12 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Auth.login(
                   emailController.text.toString(),
                   passwordController.text.toString(),
-                  (bool success, dynamic responseData) {
+                  (bool success) {
                     if (!success) {
                       Get.dialog(
                         AppAlertDialog(
-                          content:
-                              utf8.decode(responseData['message'].codeUnits),
+                          content: 'Sai tài khoản hoặc mật khẩu',
                           onPressed: () => Get.back(),
                         ),
                       );

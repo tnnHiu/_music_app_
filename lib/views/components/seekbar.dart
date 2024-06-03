@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 
 class SeekBarData {
   final Duration position;
+  final Duration bufferedPosition;
   final Duration duration;
 
-  SeekBarData(this.position, this.duration);
+  SeekBarData(
+    this.position,
+    this.bufferedPosition,
+    this.duration,
+  );
 }
 
 class SeekBar extends StatefulWidget {

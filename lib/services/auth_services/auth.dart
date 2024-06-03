@@ -10,8 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 
-typedef LoginCallback = void Function(bool success, dynamic responseData);
-typedef RegisterCallback = void Function(bool success, dynamic responseData);
+// typedef LoginCallback = void Function(bool success, dynamic responseData);
+// typedef RegisterCallback = void Function(bool success, dynamic responseData);
+typedef LoginCallback = void Function(bool success);
+typedef RegisterCallback = void Function(bool success);
 
 class Auth {
   static late SharedPreferences preferences;
@@ -43,7 +45,7 @@ class Auth {
       writeCache(key: 'token', value: token);
       Get.offAll(() => const AppMainScreen());
     } else {
-      callback(false, responseData);
+      callback(false);
     }
   }
 
@@ -66,9 +68,9 @@ class Auth {
     var response = await http.post(url, headers: headers, body: body);
     var responseData = jsonDecode(response.body);
     if (responseData['success'] == true) {
-      callback(true, responseData);
+      callback(true);
     } else {
-      callback(false, responseData);
+      callback(false);
     }
   }
 

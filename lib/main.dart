@@ -2,20 +2,26 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:music_app_project/controllers/audio_player_controller.dart';
 import 'package:music_app_project/views/components/app_appbar.dart';
 import 'package:music_app_project/views/screens/auth_screen/login_screen.dart';
 import 'package:music_app_project/views/screens/auth_screen/signup_screen.dart';
 import 'package:music_app_project/views/screens/discovery_screen.dart';
-import 'package:music_app_project/views/screens/favourite_screen.dart';
 import 'package:music_app_project/views/screens/home_screen.dart';
 import 'package:music_app_project/views/screens/playlist_screen.dart';
 import 'package:music_app_project/views/screens/song_screen.dart';
 import 'package:music_app_project/views/screens/upload_song_screen.dart';
 import 'package:music_app_project/views/screens/user_screen.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  ).then((_) => runApp(const MyApp()));
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,6 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(AudioPlayerController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Music App',
@@ -61,7 +68,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
 
   final List _tabs = [
     const HomeScreen(),
-    const FavouriteScreen(),
     const DiscoveryScreen(),
     const UserScreen(),
   ];
@@ -70,11 +76,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  @override
-  void initState() async {
-    super.initState();
   }
 
   @override
@@ -93,10 +94,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'Favourites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.play_circle_outlined),

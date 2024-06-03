@@ -8,7 +8,7 @@ class PlaylistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // List<PlayList> playlists = PlayList.playlists;
-    PlayList playlist = Get.arguments ?? PlayList.playlists;
+    Playlist playlist = Get.arguments ?? Playlist.playlists;
 
     return Container(
       decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _PlaylistSongs extends StatelessWidget {
     required this.playlist,
   });
 
-  final PlayList playlist;
+  final Playlist playlist;
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +191,7 @@ class _PlaylistInformation extends StatelessWidget {
     required this.playlist,
   });
 
-  final PlayList playlist;
+  final Playlist playlist;
 
   @override
   Widget build(BuildContext context) {

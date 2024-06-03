@@ -8,7 +8,7 @@ class PlaylistCard extends StatelessWidget {
     required this.playlist,
   });
 
-  final PlayList playlist;
+  final Playlist playlist;
 
   @override
   Widget build(BuildContext context) {

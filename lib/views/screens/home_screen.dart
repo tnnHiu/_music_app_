@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Song> songs = [];
-  List<PlayList> playlists = PlayList.playlists;
+  List<Playlist> playlists = Playlist.playlists;
   late SongViewModel _songViewModel;
 
   @override
@@ -68,7 +68,7 @@ class _PlaylistMusic extends StatelessWidget {
     required this.playlists,
   });
 
-  final List<PlayList> playlists;
+  final List<Playlist> playlists;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,10 @@ class _TrendingMusic extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: songs.length,
               itemBuilder: (context, index) {
-                return SongCard(song: songs[index]);
+                return SongCard(
+                  songIndex: index,
+                  songs: songs,
+                );
               },
             ),
           ),

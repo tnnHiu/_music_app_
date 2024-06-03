@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app_project/services/auth_services/auth.dart';
@@ -8,7 +6,6 @@ import 'package:music_app_project/views/screens/auth_screen/login_screen.dart';
 import '../../components/app_alert_dialog.dart';
 import '../../components/app_button.dart';
 import '../../components/app_text_field.dart';
-
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -169,20 +166,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   phoneNumController.text.toString(),
                   emailController.text.toString(),
                   passwordController.text.toString(),
-                  (bool success, dynamic responseData) {
+                  (bool success) {
                     if (success) {
                       Get.dialog(
                         AppAlertDialog(
-                          content:
-                              utf8.decode(responseData['message'].codeUnits),
+                          content: 'Đăng ký thành công',
                           onPressed: () => Get.offAll(const LoginScreen()),
                         ),
                       );
                     } else {
                       Get.dialog(
                         AppAlertDialog(
-                            content:
-                                utf8.decode(responseData['message'].codeUnits),
+                            content: 'Đăng ký thất bại, vui lòng thử lại',
                             onPressed: () => Get.back()),
                       );
                     }
