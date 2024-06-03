@@ -22,68 +22,22 @@ class _SongScreenState extends State<SongScreen> {
 
   // AudioPlayer audioPlayer = AudioPlayer();
   late AudioPlayerController audioPlayerController;
-  final _playlist = ConcatenatingAudioSource(children: []);
 
   @override
   void initState() {
     super.initState();
     audioPlayerController = Get.find<AudioPlayerController>();
     _initializePlayer();
-    // for (Song song in songs) {
-    //   _playlist.add(
-    //     AudioSource.uri(
-    //       Uri.parse(song.source),
-    //       tag: MediaItem(
-    //         id: song.id,
-    //         artist: song.artist,
-    //         title: song.title,
-    //         artUri: Uri.parse(song.image),
-    //       ),
-    //     ),
-    //   );
-    // }
-    //
-    // audioPlayer.setAudioSource(
-    //   _playlist,
-    //   initialIndex: currentSongIndex,
-    //   initialPosition: Duration.zero,
-    // );
   }
 
   void _initializePlayer() async {
-    for (Song song in songs) {
-      _playlist.add(
-        AudioSource.uri(
-          Uri.parse(song.source),
-          tag: MediaItem(
-            id: song.id,
-            artist: song.artist,
-            title: song.title,
-            artUri: Uri.parse(song.image),
-          ),
-        ),
-      );
-    }
-
-    await audioPlayerController.audioPlayer.setAudioSource(
-      _playlist,
-      initialIndex: currentSongIndex,
-      initialPosition: Duration.zero,
-    );
-
-    audioPlayerController.audioPlayer.play();
+    await audioPlayerController.initializePlayer(songs, currentSongIndex);
   }
 
-  // @override
-  // void dispose() {
-  //   audioPlayer.dispose();
-  //   super.dispose();
-  // }
-
   Stream<SeekBarData> get _seekBarDataStream => rxdart.Rx.combineLatest3(
-        audioPlayerController.audioPlayer.positionStream,
-        audioPlayerController.audioPlayer.bufferedPositionStream,
-        audioPlayerController.audioPlayer.durationStream,
+        audioPlayerController.audioPlayer!.positionStream,
+        audioPlayerController.audioPlayer!.bufferedPositionStream,
+        audioPlayerController.audioPlayer!.durationStream,
         (position, bufferedPosition, duration) => SeekBarData(
           position,
           bufferedPosition,
@@ -103,7 +57,7 @@ class _SongScreenState extends State<SongScreen> {
         fit: StackFit.expand,
         children: [
           StreamBuilder<SequenceState?>(
-            stream: audioPlayerController.audioPlayer.sequenceStateStream,
+            stream: audioPlayerController.audioPlayer?.sequenceStateStream,
             builder: (context, snapshot) {
               final state = snapshot.data;
               if (state?.sequence.isEmpty ?? true) {
@@ -116,15 +70,11 @@ class _SongScreenState extends State<SongScreen> {
               );
             },
           ),
-          // Image.network(
-          //   song.image,
-          //   fit: BoxFit.cover,
-          // ),
           const _BackgroundFilter(),
           _MusicPlayer(
             // song: song,
             seekBarDataStream: _seekBarDataStream,
-            audioPlayer: audioPlayerController.audioPlayer,
+            audioPlayer: audioPlayerController.audioPlayer!,
           ),
         ],
       ),

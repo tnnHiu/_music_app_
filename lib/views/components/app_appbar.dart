@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/audio_player_controller.dart';
 import '../../services/auth_services/auth.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,6 +17,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         icon: const Icon(Icons.grid_view_rounded),
         color: Colors.white,
         onPressed: () {
+          final audioController = Get.find<AudioPlayerController>();
+          audioController.stopAndDisposePlayer();
           Auth.logout();
         },
       ),

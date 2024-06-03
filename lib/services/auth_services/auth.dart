@@ -8,6 +8,7 @@ import 'package:music_app_project/constants/app_constants.dart';
 import 'package:music_app_project/views/screens/auth_screen/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../controllers/audio_player_controller.dart';
 import '../../main.dart';
 
 // typedef LoginCallback = void Function(bool success, dynamic responseData);
@@ -82,6 +83,7 @@ class Auth {
     //   var response = await http.post(url, headers: headers);
     //   var responseData = jsonDecode(response.body);
     //   if (responseData['success'] == true) {
+
     removeCache();
     Get.offAll(() => const LoginScreen());
     // }
