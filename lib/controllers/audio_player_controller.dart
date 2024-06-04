@@ -35,12 +35,12 @@ class AudioPlayerController extends GetxController {
     for (Song song in songs) {
       playlist.add(
         AudioSource.uri(
-          Uri.parse(song.source),
+          Uri.parse(song.urlAudio),
           tag: MediaItem(
-            id: song.id,
-            artist: song.artist,
+            id: song.id.toString(),
+            artist: song.artistName,
             title: song.title,
-            artUri: Uri.parse(song.image),
+            artUri: Uri.parse(song.urlThumbnail),
           ),
         ),
       );

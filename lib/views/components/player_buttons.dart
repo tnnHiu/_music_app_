@@ -14,6 +14,32 @@ class PlayerButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        StreamBuilder<LoopMode>(
+          stream: audioPlayer.loopModeStream,
+          builder: (context, snapshot) {
+            final loopMode = snapshot.data ?? LoopMode.off;
+            const icons = [
+              Icon(Icons.repeat, color: Colors.white),
+              Icon(Icons.repeat, color: Colors.orange),
+              Icon(Icons.repeat_one, color: Colors.orange),
+            ];
+            const cycleModes = [
+              LoopMode.off,
+              LoopMode.all,
+              LoopMode.one,
+            ];
+            final index = cycleModes.indexOf(loopMode);
+            return IconButton(
+              onPressed: () {
+                audioPlayer.setLoopMode(
+                  cycleModes[
+                      (cycleModes.indexOf(loopMode) + 1) % cycleModes.length],
+                );
+              },
+              icon: icons[index],
+            );
+          },
+        ),
         StreamBuilder<SequenceState?>(
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {
@@ -88,6 +114,24 @@ class PlayerButton extends StatelessWidget {
                 color: Colors.white,
               ),
               iconSize: 45.0,
+            );
+          },
+        ),
+        StreamBuilder<bool>(
+          stream: audioPlayer.shuffleModeEnabledStream,
+          builder: (context, snapshot) {
+            final shuffleModeEnabled = snapshot.data ?? false;
+            return IconButton(
+              onPressed: () async {
+                final enable = !shuffleModeEnabled;
+                if (enable) {
+                  await audioPlayer.shuffle();
+                }
+                await audioPlayer.setShuffleModeEnabled(enable);
+              },
+              icon: shuffleModeEnabled
+                  ? const Icon(Icons.shuffle, color: Colors.white)
+                  : const Icon(Icons.shuffle, color: Colors.grey),
             );
           },
         ),

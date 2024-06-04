@@ -12,6 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="music_app_project"
         android:enableOnBackInvokedCallback="true"
+        android:usesCleartextTraffic="true"
         >
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
