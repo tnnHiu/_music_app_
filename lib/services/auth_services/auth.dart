@@ -8,7 +8,6 @@ import 'package:music_app_project/constants/app_constants.dart';
 import 'package:music_app_project/views/screens/auth_screen/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../controllers/audio_player_controller.dart';
 import '../../main.dart';
 
 // typedef LoginCallback = void Function(bool success, dynamic responseData);
@@ -76,18 +75,17 @@ class Auth {
   }
 
   static void logout() async {
-    // var url = Uri.parse('${apiUrl}logout');
-    // var token = await readCache(key: 'token');
-    // if (token != null) {
-    //   Map<String, String>? headers = {'token': token};
-    //   var response = await http.post(url, headers: headers);
-    //   var responseData = jsonDecode(response.body);
-    //   if (responseData['success'] == true) {
-
-    removeCache();
-    Get.offAll(() => const LoginScreen());
-    // }
-    // }
+    var url = Uri.parse('${apiUrl}logout');
+    String? token = await readCache(key: 'token');
+    if (token != null) {
+      Map<String, String>? headers = {'token': token};
+      var response = await http.post(url, headers: headers);
+      var responseData = jsonDecode(response.body);
+      if (responseData['success'] == true) {
+        removeCache();
+        Get.offAll(() => const LoginScreen());
+      }
+    }
   }
 
   static Future<void> writeCache(

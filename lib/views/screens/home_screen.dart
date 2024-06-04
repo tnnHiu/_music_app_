@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_project/view_model/song_view_model.dart';
+import 'package:music_app_project/view_model/recommend_song_view_model.dart';
 
 import '../../models/models.dart';
 import '../components/playlist_card.dart';
@@ -14,22 +14,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Song> songs = [];
+  List<Song> recommendSongsRate = [];
+  List<Song> recommendSongsView = [];
   List<Playlist> playlists = Playlist.playlists;
-  late SongViewModel _songViewModel;
+
+  // late SongViewModel _songViewModel;
+  late RecommendSongViewModel _recommendSongViewModel;
 
   @override
   void initState() {
-    _songViewModel = SongViewModel();
-    _songViewModel.loadSong();
+    _recommendSongViewModel = RecommendSongViewModel();
+    _recommendSongViewModel.loadRecommendSong();
     observeData();
     super.initState();
   }
 
   void observeData() {
-    _songViewModel.songStream.stream.listen((songList) {
+    _recommendSongViewModel.recommendSongStream.stream.listen((recommendSong) {
       setState(() {
-        songs.addAll(songList);
+        recommendSongsRate.addAll(recommendSong.songsRate);
+        recommendSongsView.addAll(recommendSong.songsView);
       });
     });
   }
@@ -53,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const _DiscoverMusic(),
-              _TrendingMusic(songs: songs),
+              _TrendingMusic(
+                  title: 'Recommend Songs Rate', songs: recommendSongsRate),
+              _TrendingMusic(
+                  title: 'Recommend Songs View', songs: recommendSongsView),
               _PlaylistMusic(playlists: playlists)
             ],
           ),
@@ -94,10 +101,12 @@ class _PlaylistMusic extends StatelessWidget {
 
 class _TrendingMusic extends StatelessWidget {
   const _TrendingMusic({
+    required this.title,
     required this.songs,
   });
 
   final List<Song> songs;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +118,10 @@ class _TrendingMusic extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: 20),
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
             child: SectionHeader(
-              title: 'Trending Music',
+              title: title,
               action: 'View More',
             ),
           ),
