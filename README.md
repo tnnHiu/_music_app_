@@ -14,3 +14,13 @@ Vào lib/constants/app_constants.dart chỉnh sửa apiUrl
 http://your_ip:8081/api/
 
 
+### Chức năng trong app
+
+Phát nhạc( chuyển bài trước sau, dừng, tiếp tục phát, trộn bài, lặp lại bài đang phát, kéo thanh seekbar để tua nhạc) 
+Hiển thị các recommend songs (theo view và theo rate).
+Tạo playlist (đang làm).
+Tải nhạc lên server.
+Đăng nhập, đăng ký, đăng xuất.
+
+
+
