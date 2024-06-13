@@ -43,8 +43,10 @@ class Auth {
     if (responseData['success'] == true) {
       var token = responseData['token'];
       writeCache(key: 'token', value: token);
+      debugPrint(token);
       Get.offAll(() => const AppMainScreen());
     } else {
+      debugPrint('Khong co token luc dang nhap');
       callback(false);
     }
   }
@@ -98,8 +100,10 @@ class Auth {
     preferences = await SharedPreferences.getInstance();
     String? value = preferences.getString(key);
     if (value != null) {
+      debugPrint(value);
       return value;
     }
+    debugPrint('Khong co token');
     return null;
   }
 

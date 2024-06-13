@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app_project/constants/app_constants.dart';
 import 'package:music_app_project/models/genre.dart';
@@ -94,11 +95,13 @@ class SourceService {
           songsRateData.map((song) => Song.fromJson(song)).toList();
       List<Song> songsView =
           songsViewData.map((song) => Song.fromJson(song)).toList();
+      debugPrint('lay duoc du lieu');
       return RecommendSong(
         songsRate: songsRate,
         songsView: songsView,
       );
     }
+    debugPrint('Khong co du lieu');
     return null;
   }
 }

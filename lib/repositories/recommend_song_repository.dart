@@ -9,14 +9,15 @@ class RecommendSongRepository {
   Future<RecommendSong?> loadRecommendSongRepository() async {
     List<Song> songsRate = [];
     List<Song> songsView = [];
-    await _recommendSongSource.loadRecommendSong().then(
-            (recommendSong) {
-          if (recommendSong != null) {
-            songsRate.addAll(recommendSong.songsRate);
-            songsView.addAll(recommendSong.songsView);
-          }
-        }
+    await _recommendSongSource.loadRecommendSong().then((recommendSong) {
+      if (recommendSong != null) {
+        songsRate.addAll(recommendSong.songsRate);
+        songsView.addAll(recommendSong.songsView);
+      }
+    });
+    return RecommendSong(
+      songsRate: songsRate,
+      songsView: songsView,
     );
-    return RecommendSong(songsRate: songsRate, songsView: songsView,);
   }
 }

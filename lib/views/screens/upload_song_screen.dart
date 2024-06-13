@@ -46,7 +46,9 @@ class _UploadSongScreenState extends State<UploadSongScreen> {
     _genreViewModel.loadGenre();
     _artistViewModel.artistStream.stream.listen((artist) {
       setState(() {
-        artists.addAll(artist);
+
+          artists.addAll(artist);
+        // artists.addAll(artist);
       });
     });
     _genreViewModel.genreStream.stream.listen((genre) {
@@ -64,7 +66,6 @@ class _UploadSongScreenState extends State<UploadSongScreen> {
       );
       return;
     }
-
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('${apiUrl}song'),
@@ -174,7 +175,7 @@ class _UploadSongScreenState extends State<UploadSongScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Expanded(
-              child: DropdownButtonFormField(
+              child: DropdownButtonFormField<int>(
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: InputBorder.none,
