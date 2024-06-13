@@ -9,18 +9,19 @@ Trước khi chạy ứng dụng:
 Tải server tại đây:
 https://github.com/vihackeriue/Server-API-Music-App
 
-Trong mã nguồn ứng dụng:
+* Trong mã nguồn ứng dụng:
 Vào lib/constants/app_constants.dart chỉnh sửa apiUrl 
 http://your_ip:8081/api/
+* Thay thế your_api thành địa chỉ ip của máy
 
 
 ### Chức năng trong app
 
-Phát nhạc( chuyển bài trước sau, dừng, tiếp tục phát, trộn bài, lặp lại bài đang phát, kéo thanh seekbar để tua nhạc) 
-Hiển thị các recommend songs (theo view và theo rate).
-Tạo playlist (đang làm).
-Tải nhạc lên server.
-Đăng nhập, đăng ký, đăng xuất.
+* Phát nhạc( chuyển bài trước sau, dừng, tiếp tục phát, trộn bài, lặp lại bài đang phát, kéo thanh seekbar để tua nhạc) 
+* Hiển thị các recommend songs (theo view và theo rate).
+* Tạo playlist (đang làm).
+* Tải nhạc lên server.
+* Đăng nhập, đăng ký, đăng xuất.
 
 
 
