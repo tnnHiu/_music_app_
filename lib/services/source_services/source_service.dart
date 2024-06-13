@@ -10,6 +10,28 @@ import "../../models/models.dart";
 import '../auth_services/auth.dart';
 
 class SourceService {
+  Future<List<Playlist>?> loadplaylist() async {
+    final url = Uri.parse('${apiUrl}playlist');
+    String? token = await Auth.readCache(key: 'token');
+    var headers = {'token': token.toString()};
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final bodyContent = utf8.decode(response.bodyBytes);
+      var playlistWrapper = jsonDecode(bodyContent) as Map;
+      var playlistList = playlistWrapper['listResult'] as List;
+
+      final songs = await loadSong();
+      final songMap = {for (var song in songs!) song.id: song};
+
+      List<Playlist> playlists = playlistList.map((playlist) {
+        return Playlist.fromJson(playlist, songMap);
+      }).toList();
+      return playlists;
+    }
+    return null;
+  }
+
   Future<List<Song>?> loadSong() async {
     final url = Uri.parse('${apiUrl}song');
     String? token = await Auth.readCache(key: 'token');

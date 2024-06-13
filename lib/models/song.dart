@@ -1,33 +1,3 @@
-// class Song {
-//   final String id;
-//   final String title;
-//   final String artist;
-//   final String source;
-//   final String image;
-//   final String genreId;
-//   final String artistId;
-//   final String description;
-//
-//   Song({
-//     required this.id,
-//     required this.title,
-//     this.artist = '',
-//     required this.source,
-//     required this.image,
-//     this.genreId = '',
-//     this.artistId = '',
-//     this.description = '',
-//   });
-//
-//   factory Song.fromJson(Map<String, dynamic> map) {
-//     return Song(
-//       title: map['title'],
-//       id: map['id'],
-//       source: map['source'],
-//       image: map['image'],
-//     );
-//   }
-// }
 import '../constants/app_constants.dart';
 
 class Song {

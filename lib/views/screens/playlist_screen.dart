@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app_project/models/models.dart';
 
+import '../../services/auth_services/auth.dart';
+
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     // List<PlayList> playlists = PlayList.playlists;
-    Playlist playlist = Get.arguments ?? Playlist.playlists;
+    Playlist playlist = Get.arguments;
 
     return Container(
       decoration: BoxDecoration(
@@ -200,8 +202,9 @@ class _PlaylistInformation extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(15.0),
           // Image.network(playlist.imageUrl),
-          child: Image.asset(
-            playlist.imageUrl,
+          child: Image.network(
+            headers: {'token': Auth.readCache(key: 'token').toString()},
+            playlist.urlAvatar,
             height: MediaQuery.of(context).size.height * 0.3,
             width: MediaQuery.of(context).size.height * 0.3,
             fit: BoxFit.cover,

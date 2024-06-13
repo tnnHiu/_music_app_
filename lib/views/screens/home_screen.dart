@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_project/view_model/playlist_view_model.dart';
 import 'package:music_app_project/view_model/recommend_song_view_model.dart';
 
 import '../../models/models.dart';
@@ -16,15 +17,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Song> recommendSongsRate = [];
   List<Song> recommendSongsView = [];
-  List<Playlist> playlists = Playlist.playlists;
+  List<Playlist> playlists = [];
 
   // late SongViewModel _songViewModel;
   late RecommendSongViewModel _recommendSongViewModel;
+  late PlaylistViewModel _playlistViewModel;
 
   @override
   void initState() {
     _recommendSongViewModel = RecommendSongViewModel();
     _recommendSongViewModel.loadRecommendSong();
+    _playlistViewModel = PlaylistViewModel();
+    _playlistViewModel.loadPlaylist();
     observeData();
     super.initState();
   }
@@ -34,6 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         recommendSongsRate.addAll(recommendSong.songsRate);
         recommendSongsView.addAll(recommendSong.songsView);
+      });
+    });
+    _playlistViewModel.playlistStream.stream.listen((playlist) {
+      setState(() {
+        playlists.addAll(playlist);
       });
     });
   }
@@ -57,10 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const _DiscoverMusic(),
-              _TrendingMusic(
-                  title: 'Recommend Songs Rate', songs: recommendSongsRate),
-              _TrendingMusic(
-                  title: 'Recommend Songs View', songs: recommendSongsView),
+              _TrendingMusic(title: 'Songs Rate', songs: recommendSongsRate),
+              _TrendingMusic(title: 'Songs View', songs: recommendSongsView),
               _PlaylistMusic(playlists: playlists)
             ],
           ),

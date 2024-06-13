@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app_project/models/models.dart';
+import 'package:music_app_project/services/auth_services/auth.dart';
 
 class PlaylistCard extends StatelessWidget {
   const PlaylistCard({
@@ -29,8 +30,9 @@ class PlaylistCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
-              child: Image(
-                image: AssetImage(playlist.imageUrl),
+              child: Image.network(
+                headers: {'token': Auth.readCache(key: 'token').toString()},
+                playlist.urlAvatar,
                 height: 50,
                 width: 50,
                 fit: BoxFit.cover,

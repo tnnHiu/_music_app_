@@ -10,7 +10,6 @@ class RecommendSongViewModel {
   Future<void> loadRecommendSong() async {
     final recommendSongRepository = RecommendSongRepository();
     recommendSongRepository.loadRecommendSongRepository().then((recommendSong)
-        // => recommendSongStream.add(song!),
         {
       recommendSongStream.add(recommendSong!);
     });

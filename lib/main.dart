@@ -16,11 +16,16 @@ import 'package:music_app_project/views/screens/user_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  JustAudioBackground.init(
-    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-  ).then((_) => runApp(const MyApp()));
+  try {
+    JustAudioBackground.init(
+      androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+      androidNotificationChannelName: 'Audio playback',
+      androidNotificationOngoing: true,
+    ).then((_) => runApp(const MyApp()));
+  } catch (e, stack) {
+    print('Error initializing JustAudioBackground: $e');
+    print(stack);
+  }
   // runApp(const MyApp());
 }
 
@@ -29,6 +34,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // audio handler
+    // Chạy xuyên suốt ứng dụng
     Get.put(AudioPlayerController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
