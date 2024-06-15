@@ -3,6 +3,7 @@ import 'package:music_app_project/view_model/playlist_view_model.dart';
 import 'package:music_app_project/view_model/recommend_song_view_model.dart';
 
 import '../../models/models.dart';
+import '../components/discovery_music.dart';
 import '../components/playlist_card.dart';
 import '../components/section_header.dart';
 import '../components/song_card.dart';
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              const _DiscoverMusic(),
+              const DiscoverMusic(),
               _TrendingMusic(title: 'Songs Rate', songs: recommendSongsRate),
               _TrendingMusic(title: 'Songs View', songs: recommendSongsView),
               _PlaylistMusic(playlists: playlists)
@@ -144,52 +145,6 @@ class _TrendingMusic extends StatelessWidget {
                   songs: songs,
                 );
               },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DiscoverMusic extends StatelessWidget {
-  const _DiscoverMusic();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Welcome',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Enjoy your favourite music',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          TextFormField(
-            decoration: InputDecoration(
-              isDense: true,
-              filled: true,
-              fillColor: Colors.white,
-              hintText: 'Search',
-              hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Colors.grey.shade400),
-              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
         ],

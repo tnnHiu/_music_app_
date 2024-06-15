@@ -9,7 +9,6 @@ class PlaylistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List<PlayList> playlists = PlayList.playlists;
     Playlist playlist = Get.arguments;
 
     return Container(

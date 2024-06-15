@@ -9,7 +9,7 @@ class Artist {
 
   factory Artist.fromJson(Map<String, dynamic> map) {
     return Artist(
-      id: map['id'] as int ,
+      id: map['id'] as int,
       name: map['name'],
     );
   }

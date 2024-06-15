@@ -10,8 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 
-// typedef LoginCallback = void Function(bool success, dynamic responseData);
-// typedef RegisterCallback = void Function(bool success, dynamic responseData);
 typedef LoginCallback = void Function(bool success);
 typedef RegisterCallback = void Function(bool success);
 
@@ -46,7 +44,7 @@ class Auth {
       debugPrint(token);
       Get.offAll(() => const AppMainScreen());
     } else {
-      debugPrint('Khong co token luc dang nhap');
+      debugPrint('No token');
       callback(false);
     }
   }
